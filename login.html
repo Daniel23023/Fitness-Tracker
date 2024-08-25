@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accedi</title>
+    <!--CSS BOOTSTRAP-->
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link href="./assets/bootstrap-icons-1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <!--STILE PAGINA-->
+    <link rel="stylesheet" href="./css/loginStyle.css">
+    <!--FOOTER-->
+    <link rel="stylesheet" href="./css/footer.css">
+</head>
+
+<body>
+    <!--DA FARE: 
+        - aggiungere la possibilità di cambiare password;
+        - aggiungere consigli password;
+        - animazioni migliori.
+    -->
+    <div class="container-fluid sidebar">
+        <div class="row flex-nowrap">
+            <div class="col-auto px-0"> <!--SIDEBAR-->
+                <div id="sidebar" class="collapse collapse-horizontal show border-end">
+                    <div id="sidebar-nav" class="list-group border-0 rounded-0 text-sm-start min-vh-100">
+                        <a href="#" class="list-group-item border-end-0 d-inline-block text-truncate"
+                            data-bs-parent="index.html"><i class="bi bi-house-fill"></i> <span>Home</span> </a>
+                        <a href="#" class="list-group-item border-end-0 d-inline-block text-truncate"
+                            data-bs-parent="stats.html"><i class="bi bi-trophy-fill"></i> <span>Statistiche</span></a>
+                        <a href="#" class="list-group-item border-end-0 d-inline-block text-truncate"
+                            data-bs-parent="consigli.html"><i class="bi bi-journal-bookmark-fill"></i>
+                            <span>Consigli</span></a>
+                        <a href="#" class="list-group-item border-end-0 d-inline-block text-truncate"
+                            data-bs-parent="profile.html"><i class="bi bi-person-arms-up"></i> <span>Profilo</span></a>
+                        <a href="#" class="list-group-item border-end-0 d-inline-block text-truncate"
+                            data-bs-parent="settings.html"><i class="bi bi-gear-fill"></i> <span>Impostazioni</span></a>
+                    </div>
+                </div>
+            </div>
+            <main class="col px-0 px-md-2 pt-2">
+                <a id="sidebar-btn" href="#" data-bs-target="#sidebar" data-bs-toggle="collapse"
+                    class="border rounded-3 p-1 text-decoration-none"><i class="bi bi-list bi-lg py-2 p-1"></i></a>
+                <!--FORM ACCESSO E REGISTRATI-->
+                <section class="forms-section">
+                    <div class="forms">
+                        <div class="form-wrapper is-active"> <!--FORM LOGIN-->
+                            <button type="button" class="switcher switcher-login rounded">
+                                Accedi
+                            </button>
+                            <form class="form form-login shadow-lg">
+                                <fieldset>
+                                    <legend>Inserisci username e password per accedere</legend>
+                                    <p id="errore-login" class="hidden error-msg text-center" class="rounded text-center"><!--dinamico--></p>
+                                    <div class="input-block"> <!--INPUT EMAIL-->
+                                        <label for="login-username">Username</label>
+                                        <input type="text" id="login-username" class="" onclick="resetta(this, 'login')"
+                                            required>
+                                    </div>
+                                    <div class="input-block" style="position: relative;"> <!--INPUT PASSWORD-->
+                                        <label for="login-password">Password</label>
+                                        <input type="password" id="login-password" class=""
+                                            onclick="resetta(this, 'login')" minlength="8" maxlength="16" required>
+                                        <button class="btn btn-outline-secondary m-0 p-0" type="button"
+                                            id="button-addon1" onclick="showHidePW('login-password', 'accesso')"
+                                            style="position: absolute; bottom: 0px; right:3px; border-style: none;"><img
+                                                src="./img/eye.png" class="opacity-50 accesso" height="45px"><img
+                                                src="./img/hide.png" class="opacity-50 accesso hidden"
+                                                height="45px"></button>
+                                        <p id="pw-dimenticata" onclick="pwDimenticata()">Password dimenticata?</p>
+                                    </div>
+                                </fieldset>
+                                <button type="button" class="btn-login" onclick="login(event)">ACCEDI</button>
+                            </form>
+                        </div>
+
+                        <div class="form-wrapper"> <!--FORM SIGNUP-->
+                            <button type="button" class="switcher switcher-signup rounded">
+                                Registrati
+                            </button>
+                            <form class="form form-signup shadow">
+                                <fieldset id="field-anagrafica" class="field">
+                                    <legend>Inserisci nome e cognome per creare il tuo account</legend>
+                                    <div class="input-block"> <!--INPUT NOME-->
+                                        <label for="signup-nome">Nome</label>
+                                        <input type="text" id="signup-nome" onclick="resetta(this, 'signup')" required>
+                                    </div>
+                                    <div class="input-block"> <!--INPUT COGNOME-->
+                                        <label for="signup-cognome">Cognome</label>
+                                        <input type="text" id="signup-cognome" onclick="resetta(this, 'signup')"
+                                            required>
+                                    </div>
+                                    <div class="input-block">
+                                        <label for="signup-username">Username <span id="username-ok" class="hidden rounded px-1" style="color: green"><b>username valido</b></span><span id="username-error" class="hidden rounded px-1" style="color: red;"><b>username già preso!</b></span></label>
+                                        <input type="text" id="signup-username" onclick="resetta(this, 'signup')" onchange="controlloUsername(this.value)" required>
+                                    </div>
+                                    <button type="button" id="primo-continua" class="btn-signup cambio"
+                                        data-target="field-account">CONTINUA</button>
+                                </fieldset>
+                                <fieldset id="field-account" class="field hidden">
+                                    <legend>Inserisci email e password per creare l'account</legend>
+                                    <div class="input-block"> <!--INPUT EMAIL-->
+                                        <label for="signup-email">E-mail</label>
+                                        <input type="email" id="signup-email" onclick="resetta(this, 'signup')"
+                                            required>
+                                    </div>
+                                    <div class="input-block" style="position: relative;"> <!--INPUT PASSWORD-->
+                                        <label class="signup-password">Password <span id="forza"
+                                                class="hidden rounded px-1"></span></label>
+                                        <input type="password" id="signup-password" onclick="resetta(this, 'signup')"
+                                            minlength="8" maxlength="16" onchange="checkPwStrength(this, 'forza')"
+                                            required>
+                                        <button class="btn btn-outline-secondary m-0 p-0" type="button"
+                                            id="button-addon1" onclick="showHidePW('signup-password', 'registrare')"
+                                            style="position: absolute; bottom: 0px; right:3px; border-style: none;"><img
+                                                src="./img/eye.png" class="opacity-50 registrare" height="45px"><img
+                                                src="./img/hide.png" class="opacity-50 registrare hidden"
+                                                height="45px"></button>
+                                    </div>
+                                    <div class="input-block" style="position: relative;"> <!--INPUT PASSWORD CONFERMA-->
+                                        <label class="signup-conferma">Conferma password</label>
+                                        <input type="password" id="signup-conferma" onclick="resetta(this, 'signup')"
+                                            minlength="8" maxlength="16" required>
+                                        <button class="btn btn-outline-secondary m-0 p-0" type="button"
+                                            id="button-addon1" onclick="showHidePW('signup-conferma', 'conferma')"
+                                            style="position: absolute; bottom: 0px; right:3px; border-style: none;"><img
+                                                src="./img/eye.png" class="opacity-50 conferma" height="45px"><img
+                                                src="./img/hide.png" class="opacity-50 conferma hidden"
+                                                height="45px"></button>
+                                    </div>
+                                    <button type="button" class="btn-signup cambio"
+                                        data-target="field-anagrafica">INDIETRO</button>
+                                    <button type="button" class="btn-signup cambio"
+                                        data-target="field-dati">CONTINUA</button>
+                                </fieldset>
+                                <fieldset id="field-dati" class="field hidden">
+                                    <legend>Inserisci i tuoi dati personali</legend>
+                                    <p id="errore-signup" class="hidden error-msg text-center" class="rounded text-center"><!--dinamico--></p>
+                                    <div class="input-block"> <!--INPUT ETA-->
+                                        <label for="signup-eta">Età</label>
+                                        <input type="number" id="signup-eta" min="13" max="80"
+                                            onclick="resetta(this, 'signup')" required>
+                                    </div>
+                                    <div class="input-block"> <!--INPUT PESO-->
+                                        <label for="signup-peso">Peso: <span id="showPeso"></span></label>
+                                        <input type="range" id="signup-peso" min="30" max="150" step="1"
+                                            onclick="resetta(this, 'signup')" oninput="mostraPeso(this.value)" required>
+                                    </div>
+                                    <div class="input-block"> <!--INPUT ALTEZZA-->
+                                        <label for="signup-altezza">Altezza (cm)</label>
+                                        <input type="number" id="signup-altezza" min="120" max="210" onclick="resetta(this, 'signup')" required>
+                                    </div>
+                                    <div class="input-block mb-0 rounded" style="background-color: #FBAF00;">
+                                        <!--INPUT PRIVACY-->
+                                        <input type="checkbox" id="signup-privacy" onclick="resetta(this, 'signup')"
+                                            required disabled
+                                            style="display: inline; width: 10%; margin-bottom: 5px !important;">
+                                        <label class="mb-2" for="signup-privacy" style="font-size: smaller;">Accetto la
+                                            <a href="./PrivacyPolicy.txt" id="privacy" style="color:black; text-decoration: underline;" onclick="document.getElementById('signup-privacy').removeAttribute('disabled')">privacy policy</a></label>
+                                    </div>
+                                    <p id="errore-pw" class="error-msg text-center hidden mt-2" class="rounded text-center"><b>Le
+                                            password non coincidono!</b></p>
+                                    <button type="button" class="btn-signup cambio"
+                                        data-target="field-account">INDIETRO</button>
+                                    <button type="button" id="bottoneRegistrati" class="btn-signup"
+                                        onclick="signup(event)">REGISTRATI</button>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+                <!--PASSWORD DIMENTICATA-->
+                <section class="forms-section hidden">
+                    <div class="forms">
+                        <div class="form-wrapper is-active">
+                            <form class="form form-password shadow-lg">
+                                <fieldset>
+                                    <legend>Password dimenticata</legend>
+                                    <p id="errore-nuova" class="hidden error-msg" class="rounded text-center"><b>Campo
+                                            mancante!</b></p>
+                                    <div class="input-block"> <!--INPUT EMAIL-->
+                                        <label for="pw-email">Inserisci l'e-mail</label>
+                                        <input type="email" id="pw-email" class="" onclick="resetta(this, 'nuova')"
+                                            required>
+                                    </div>
+                                    <div class="input-block" style="position: relative;"> <!--INPUT PASSWORD-->
+                                        <label class="signup-password">Nuova password <span id="nuova-forza"
+                                                class="hidden rounded px-1"></span></label>
+                                        <input type="password" id="nuova-password" onclick="resetta(this, 'nuova')"
+                                            minlength="8" maxlength="16" onchange="checkPwStrength(this, 'nuova-forza')"
+                                            required>
+                                        <button class="btn btn-outline-secondary m-0 p-0" type="button"
+                                            id="button-addon1" onclick="showHidePW('nuova-password', 'nuova')"
+                                            style="position: absolute; bottom: 0px; right:3px; border-style: none;"><img
+                                                src="./img/eye.png" class="opacity-50 nuova" height="45px"><img
+                                                src="./img/hide.png" class="opacity-50 nuova hidden"
+                                                height="45px"></button>
+                                    </div>
+                                    <div class="input-block" style="position: relative;"> <!--INPUT PASSWORD CONFERMA-->
+                                        <label class="signup-conferma">Conferma nuova password</label>
+                                        <input type="password" id="nuova-conferma" onclick="resetta(this, 'nuova')"
+                                            minlength="8" maxlength="16" required>
+                                        <button class="btn btn-outline-secondary m-0 p-0" type="button"
+                                            id="button-addon1" onclick="showHidePW('nuova-conferma', 'nuova-conferma')"
+                                            style="position: absolute; bottom: 0px; right:3px; border-style: none;"><img
+                                                src="./img/eye.png" class="opacity-50 nuova-conferma" height="45px"><img
+                                                src="./img/hide.png" class="opacity-50 nuova-conferma hidden"
+                                                height="45px"></button>
+                                    </div>
+                                    <p id="errore-pw-nuova" class="hidden mt-2 error-msg" class="rounded text-center">
+                                        <b>Le password non coincidono!</b></p>
+                                    <button type="button" class="btn-password"
+                                        onclick="pwDimenticata()">INDIETRO</button>
+                                    <button type="button" class="btn-password" onclick="modificaPw()">MODIFICA</button>
+                                </fieldset>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+    <!--JS BOOTSTRAP-->
+    <script src="js/bootstrap.bundle.min.js"></script>
+    <!--JS-->
+    <script src="./js/loginScript.js"></script>
+    <!--FOOTER-->
+    <script src="./js/footer.js"></script>
+</body>
+
+</html>
